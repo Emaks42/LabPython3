@@ -1,8 +1,7 @@
 from src.functions import factorial, factorial_recursive, fibo, fibo_recursive
 from src.sortings import bubble_sort, quick_sort, counting_sort, radix_sort, bucket_sort, heap_sort
 from src.stack import interactive_stack
-from src.queue import interactive_queue
-from typing import  Callable
+from typing import Callable
 
 
 def main() -> None:
@@ -21,12 +20,7 @@ def main() -> None:
         24: radix_sort,
         25: bucket_sort,
         26: heap_sort,
-        31: interactive_stack,
-        32: interactive_stack,
-        33: interactive_stack,
-        34: interactive_queue,
-        35: interactive_queue,
-        36: interactive_queue,
+        3: interactive_stack,
     }
     while True:
         print("Выберите действие:")
@@ -50,22 +44,13 @@ def main() -> None:
             print("5 - bucket sort")
             print("6 - heap sort")
             inp += input()
-        elif inp == "3":
-            print("Выберите действие:")
-            print("1 - стек через связанный список")
-            print("2 - стек через list")
-            print("3 - стек на очереди")
-            print("4 - очередь через связанный список")
-            print("5 - очередь через list")
-            print("6 - очередь на стеке")
-            inp += input()
         try:
             int(inp)
         except ValueError:
             print("Вы ввели нечто нечитаемое программой, перезапуск диалогового окна")
             continue
         if int(inp) not in actions.keys():
-            print("Вы ввели нечто нечитаемое программой, перезапуск диалогового окна")
+            print("Некорректный выбор опций, перезапуск диалогового окна")
             continue
         else:
             if 20 < int(inp) < 30:
@@ -77,7 +62,7 @@ def main() -> None:
                 params = list(map(int, input().split()))
                 print("Результат соритровки: ", end="")
                 print(*actions[int(inp)](list_, *params))
-            elif int(inp) < 20:
+            elif 10 < int(inp) < 20:
                 print("введите целое число:")
                 try:
                     n = int(input())
@@ -89,8 +74,8 @@ def main() -> None:
                     print(actions[int(inp)](n))
                 except ValueError as e:
                     print(f"ошибка при выполнении функции: {str(e)}")
-            elif int(inp) > 30:
-                actions[int(inp)](int(inp[-1]) % 3 + 1)
+            elif int(inp) < 10:
+                actions[int(inp)]()
             break
 
 
