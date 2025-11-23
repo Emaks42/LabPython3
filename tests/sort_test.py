@@ -61,3 +61,9 @@ def test_bucket(inp, expected):
 def test_sort_errors():
     with pytest.raises(ValueError):
         bucket_sort([1000])
+    with pytest.raises(ValueError):
+        counting_sort([1.000])
+    with pytest.raises(ValueError):
+        radix_sort([1.000])
+    with pytest.raises(ValueError):
+        radix_sort([1, 2, 4, 1], -1)

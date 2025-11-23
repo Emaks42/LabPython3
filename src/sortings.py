@@ -103,6 +103,8 @@ def radix_sort(a: list[int], base: int = 10) -> list[int]:
         :param base: осонование для распределния чисел
         :return: Возвращает отсортированный массив
     """
+    if base < 2:
+        raise ValueError("некорректное основание в radix sort")
     if len(a) == 0:
         return a
     if not isinstance(a[0], int):

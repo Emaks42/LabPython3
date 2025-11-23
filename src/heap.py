@@ -1,5 +1,8 @@
+from typing import Any
+
+
 class Heap:
-    list_: list[int] = []
+    list_: list[Any] = []
 
     def __init__(self, key, cmp):
         self.list_ = []
