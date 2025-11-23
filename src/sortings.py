@@ -73,6 +73,10 @@ def radix_sort(a: list[int], base: int = 10) -> list[int]:
         :param base: осонование для распределния чисел
         :return: Возвращает отсортированный массив
     """
+    if len(a) == 0:
+        return a
+    if not isinstance(a[0], int):
+        raise ValueError("не целые числа в radix sort")
     current_digit = 0
     max_ = max(a)
     while base ** current_digit < max_:
@@ -106,7 +110,6 @@ def bucket_sort(a: list[float], buckets: int | None = None) -> list[float]:
 
     for obj in a:
         buckets_list[int(obj * buckets)].append(obj)
-    print(buckets_list)
 
     answer = []
     for bucket in buckets_list:

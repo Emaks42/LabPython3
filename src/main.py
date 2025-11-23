@@ -1,6 +1,7 @@
 from src.functions import factorial, factorial_recursive, fibo, fibo_recursive
 from src.sortings import bubble_sort, quick_sort, counting_sort, radix_sort, bucket_sort, heap_sort
 from src.generators import rand_int_array, rand_float_array, reverse_sorted, nearly_sorted, many_duplicates
+from src.benchmarks import timeit_once, print_benchmark_table
 from inspect import signature
 from src.stack import interactive_stack
 from typing import Callable
@@ -36,17 +37,26 @@ def main() -> None:
         4: [int, int, int],
         5: [int, int, int]
     }
+    t = False
     while True:
         print("Выберите действие:")
         print("1 - применить функцию")
         print("2 - использовать соритровку")
         print("3 - запустить интерактивный стек")
         print("4 - сгенерировать массив")
+        print("t - замерить время работы следующего вызванного объекта")
+        print("multi_t - замерить время работы всех доступных алгоритмов сортировки (внимание, занимает кучу времени!)")
         print("exit - завершить работу")
         inp = input()
         if inp == "exit":
             break
-        if inp == "1":
+        if inp == "t":
+            t = True
+            continue
+        elif inp == "multi_t":
+            print_benchmark_table()
+            continue
+        elif inp == "1":
             print("Выберите действие:")
             print("1 - найти рекурсивно факториал")
             print("2 - найти факториал (без рекурсии)")
@@ -89,6 +99,9 @@ def main() -> None:
                 params = list(map(int, input().split()))
                 print("Результат соритровки: ", end="")
                 print(*actions[int(inp)](list_, *params))
+                if t:
+                    print("Время работы:", timeit_once(actions[int(inp)], list_))
+                    t = False
             elif 10 < int(inp) < 20:
                 print("введите целое число:")
                 try:
@@ -99,7 +112,14 @@ def main() -> None:
                 try:
                     print("Результат работы функции: ", end="")
                     print(actions[int(inp)](n))
+                    if t:
+                        print("Время работы:", timeit_once(actions[int(inp)], n))
+                        t = False
                 except ValueError as e:
+                    print(f"ошибка при выполнении функции: {str(e)}")
+                except OverflowError as e:
+                    print(f"ошибка при выполнении функции: {str(e)}")
+                except RecursionError as e:
                     print(f"ошибка при выполнении функции: {str(e)}")
             elif int(inp) < 10:
                 actions[int(inp)]()
