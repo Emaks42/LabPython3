@@ -37,7 +37,7 @@ def main() -> None:
         4: [int, int, int],
         5: [int, int, int]
     }
-    t = False
+    flag_t = False
     while True:
         print("Выберите действие:")
         print("1 - применить функцию")
@@ -46,12 +46,26 @@ def main() -> None:
         print("4 - сгенерировать массив")
         print("t - замерить время работы следующего вызванного объекта")
         print("multi_t - замерить время работы всех доступных алгоритмов сортировки (внимание, занимает кучу времени!)")
+        print("exec - вывести результат работы заданной функции")
         print("exit - завершить работу")
         inp = input()
         if inp == "exit":
             break
+        if inp == "exec":
+            print("Введите название функции с параметрами (вида func(x, y)):")
+            inp = input()
+            print("Результат работы функции:", end=" ")
+            try:
+                exec(f"print(*{inp})")
+            except SyntaxError as e:
+                print(f"ошибка при выполнении функции: {str(e)}")
+            except ValueError as e:
+                print(f"ошибка при выполнении функции: {str(e)}")
+            except TypeError as e:
+                print(f"ошибка при выполнении функции: {str(e)}")
+            continue
         if inp == "t":
-            t = True
+            flag_t = True
             continue
         elif inp == "multi_t":
             print_benchmark_table()
@@ -92,16 +106,21 @@ def main() -> None:
             if 20 < int(inp) < 30:
                 print("введите параметры для функции (для сортировки - сначала массив, потом доп параметры):")
                 print(f"сигнатура используемой сортировки: {signature(actions[int(inp)])}")
-                if int(inp) == 25:
-                    list_ = list(map(float, input().split()))
-                else:
-                    list_ = list(map(int, input().split()))
-                params = list(map(int, input().split()))
-                print("Результат соритровки: ", end="")
-                print(*actions[int(inp)](list_, *params))
-                if t:
-                    print("Время работы:", timeit_once(actions[int(inp)], list_))
-                    t = False
+                try:
+                    if int(inp) == 25:
+                        list_ = list(map(float, input().split()))
+                    else:
+                        list_ = list(map(int, input().split()))
+                    params = list(map(int, input().split()))
+                    print("Результат соритровки: ", end="")
+                    print(*actions[int(inp)](list_, *params))
+                    if flag_t:
+                        print("Время работы:", timeit_once(actions[int(inp)], list_))
+                        flag_t = False
+                except TypeError:
+                    print("некорректно введены аргументы")
+                except IndexError:
+                    print("некорректно введены аргументы")
             elif 10 < int(inp) < 20:
                 print("введите целое число:")
                 try:
@@ -112,9 +131,9 @@ def main() -> None:
                 try:
                     print("Результат работы функции: ", end="")
                     print(actions[int(inp)](n))
-                    if t:
+                    if flag_t:
                         print("Время работы:", timeit_once(actions[int(inp)], n))
-                        t = False
+                        flag_t = False
                 except ValueError as e:
                     print(f"ошибка при выполнении функции: {str(e)}")
                 except OverflowError as e:

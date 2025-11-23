@@ -1,38 +1,57 @@
 from warnings import warn
 from src.heap import Heap
+from typing import Any, Callable
 
 
-def bubble_sort(a: list[int]) -> list[int]:
+def fish_func(x): return x
+def fish_cmp(x, y): return -1 if x < y else (0 if x == y else 1)
+
+
+def bubble_sort(a: list[Any], key: Callable[[Any], Any] | None = None, cmp: Callable[[Any, Any], int] | None = None) \
+        -> list[Any]:
     """
         Функция, реализующая алгоритм сортировки пузырьком
         :param a: сортируемый массив
+        :param key: ключ сортировки
+        :param cmp: компаратор
         :return: Возвращает отсортированный массив
     """
+    if not key:
+        key = fish_func
+    if not cmp:
+        cmp = fish_cmp
     for index_1 in range(len(a)):
         for index_2 in range(index_1, len(a)):
-            if a[index_1] > a[index_2]:
+            if cmp(key(a[index_1]), key(a[index_2])) == 1:
                 a[index_1], a[index_2] = a[index_2], a[index_1]
     return a
 
 
-def quick_sort(a: list[int]) -> list[int]:
+def quick_sort(a: list[Any], key: Callable[[Any], Any] | None = None, cmp: Callable[[Any, Any], int] | None = None) \
+        -> list[Any]:
     """
         Функция, реализующая алгоритм быстрой сортировки
         :param a: сортируемый массив
+        :param key: ключ сортировки
+        :param cmp: компаратор
         :return: Возвращает отсортированный массив
     """
+    if not key:
+        key = fish_func
+    if not cmp:
+        cmp = fish_cmp
     if len(a) <= 1:
         return a
     elif len(a) == 2:
-        return a if a[0] < a[1] else a[::-1]
-    core_elem = a[len(a) // 2]
+        return a if cmp(key(a[0]), key(a[1])) == -1 else a[::-1]
+    core_elem = len(a) // 2
     left = []
     right = []
-    for obj in a:
-        if obj < core_elem:
-            left.append(obj)
-        elif obj > core_elem:
-            right.append(obj)
+    for obj_index in range(len(a)):
+        if cmp(key(a[core_elem]), key(a[obj_index])) == 1:
+            left.append(a[obj_index])
+        elif cmp(key(a[core_elem]), key(a[obj_index])) == -1:
+            right.append(a[obj_index])
     left = quick_sort(left)
     right = quick_sort(right)
     return left + [core_elem] + right
@@ -114,18 +133,25 @@ def bucket_sort(a: list[float], buckets: int | None = None) -> list[float]:
     answer = []
     for bucket in buckets_list:
         if len(bucket) != 0:
-            bucket = quick_sort_float(bucket)
+            bucket = quick_sort(bucket)
             answer.extend(bucket)
     return answer
 
 
-def heap_sort(a: list[int]) -> list[int]:
+def heap_sort(a: list[Any], key: Callable[[Any], Any] | None = None, cmp: Callable[[Any, Any], int] | None = None) \
+        -> list[Any]:
     """
         Функция, реализующая алгоритм сортировки кучей
         :param a: сортируемый массив
+        :param key: ключ сортировки
+        :param cmp: компаратор
         :return: Возвращает отсортированный массив
     """
-    heap = Heap()
+    if not key:
+        key = fish_func
+    if not cmp:
+        cmp = fish_cmp
+    heap = Heap(key, cmp)
     for obj in a:
         heap.add(obj)
     heap.heapify(0)
@@ -136,27 +162,3 @@ def heap_sort(a: list[int]) -> list[int]:
         answer.append(heap.get_max())
 
     return answer[::-1]
-
-
-def quick_sort_float(a: list[float]) -> list[float]:
-    """
-        Функция, реализующая алгоритм быстрой сортировки для чисел с плавающей точкой
-        является вспомогательной для bucket_sort
-        :param a: сортируемый массив
-        :return: Возвращает отсортированный массив
-    """
-    if len(a) <= 1:
-        return a
-    elif len(a) == 2:
-        return a if a[0] < a[1] else a[::-1]
-    core_elem = a[len(a) // 2]
-    left = []
-    right = []
-    for obj in a:
-        if obj < core_elem:
-            left.append(obj)
-        elif obj > core_elem:
-            right.append(obj)
-    left = quick_sort_float(left)
-    right = quick_sort_float(right)
-    return left + [core_elem] + right
