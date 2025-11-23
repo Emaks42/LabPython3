@@ -16,6 +16,8 @@ def bubble_sort(a: list[Any], key: Callable[[Any], Any] | None = None, cmp: Call
         :param cmp: компаратор
         :return: Возвращает отсортированный массив
     """
+    if len(a) == 0:
+        return a
     if not key:
         key = fish_func
     if not cmp:
@@ -36,6 +38,8 @@ def quick_sort(a: list[Any], key: Callable[[Any], Any] | None = None, cmp: Calla
         :param cmp: компаратор
         :return: Возвращает отсортированный массив
     """
+    if len(a) == 0:
+        return a
     if not key:
         key = fish_func
     if not cmp:
@@ -47,14 +51,17 @@ def quick_sort(a: list[Any], key: Callable[[Any], Any] | None = None, cmp: Calla
     core_elem = len(a) // 2
     left = []
     right = []
+    middle = []
     for obj_index in range(len(a)):
         if cmp(key(a[core_elem]), key(a[obj_index])) == 1:
             left.append(a[obj_index])
         elif cmp(key(a[core_elem]), key(a[obj_index])) == -1:
             right.append(a[obj_index])
+        else:
+            middle.append(a[obj_index])
     left = quick_sort(left)
     right = quick_sort(right)
-    return left + [core_elem] + right
+    return left + middle + right
 
 
 def counting_sort(a: list[int]) -> list[int]:
@@ -63,6 +70,10 @@ def counting_sort(a: list[int]) -> list[int]:
         :param a: сортируемый массив
         :return: Возвращает отсортированный массив
     """
+    if not isinstance(a[0], int):
+        raise ValueError("не целые числа в counting sort")
+    if len(a) == 0:
+        return a
     max_ = a[0]
     min_ = a[0]
     for obj in a:
@@ -119,6 +130,8 @@ def bucket_sort(a: list[float], buckets: int | None = None) -> list[float]:
         :param buckets: количество "вёдер" для сортировки
         :return: Возвращает отсортированный массив
     """
+    if len(a) == 0:
+        return a
     if max(a) > 1.0:
         raise ValueError("числа больше 1 в bucket_sort")
     buckets_list: list[list[float]] = []
@@ -147,6 +160,8 @@ def heap_sort(a: list[Any], key: Callable[[Any], Any] | None = None, cmp: Callab
         :param cmp: компаратор
         :return: Возвращает отсортированный массив
     """
+    if len(a) == 0:
+        return a
     if not key:
         key = fish_func
     if not cmp:

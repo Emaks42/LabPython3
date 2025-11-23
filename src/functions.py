@@ -18,8 +18,10 @@ def factorial_recursive(n: int) -> int:
     :param n: число
     :return: Возвращает факториал числа
     """
-    if n < 1:
-        raise ValueError("введено число меньше единицы, тут вам не гамма-функция! ")
+    if n < 0:
+        raise ValueError("введено число меньше нуля, тут вам не гамма-функция! ")
+    elif n == 0:
+        return 1
     elif n == 1:
         return n
     else:
