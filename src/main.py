@@ -1,5 +1,7 @@
 from src.functions import factorial, factorial_recursive, fibo, fibo_recursive
 from src.sortings import bubble_sort, quick_sort, counting_sort, radix_sort, bucket_sort, heap_sort
+from src.generators import rand_int_array, rand_float_array, reverse_sorted, nearly_sorted, many_duplicates
+from inspect import signature
 from src.stack import interactive_stack
 from typing import Callable
 
@@ -20,14 +22,30 @@ def main() -> None:
         24: radix_sort,
         25: bucket_sort,
         26: heap_sort,
+        41: rand_int_array,
+        42: rand_float_array,
+        43: reverse_sorted,
+        44: many_duplicates,
+        45: nearly_sorted,
         3: interactive_stack,
+    }
+    val_transformations: dict[int, list[Callable]] = {
+        1: [int, int, int, bool, int],
+        2: [int, float, float, int],
+        3: [int, int],
+        4: [int, int, int],
+        5: [int, int, int]
     }
     while True:
         print("Выберите действие:")
         print("1 - применить функцию")
         print("2 - использовать соритровку")
-        print("3 - запустить интерактивный объект (стек/очередь)")
+        print("3 - запустить интерактивный стек")
+        print("4 - сгенерировать массив")
+        print("exit - завершить работу")
         inp = input()
+        if inp == "exit":
+            break
         if inp == "1":
             print("Выберите действие:")
             print("1 - найти рекурсивно факториал")
@@ -44,6 +62,14 @@ def main() -> None:
             print("5 - bucket sort")
             print("6 - heap sort")
             inp += input()
+        elif inp == "4":
+            print("Выберите действие:")
+            print("1 - массив случайных целых чисел")
+            print("2 - массив случайных вещественных чисел")
+            print("3 - массив, отсортированный в обратном порядке")
+            print("4 - массив с большим количеством дубликатов")
+            print("5 - почти отсортированный массив")
+            inp += input()
         try:
             int(inp)
         except ValueError:
@@ -55,6 +81,7 @@ def main() -> None:
         else:
             if 20 < int(inp) < 30:
                 print("введите параметры для функции (для сортировки - сначала массив, потом доп параметры):")
+                print(f"сигнатура используемой сортировки: {signature(actions[int(inp)])}")
                 if int(inp) == 25:
                     list_ = list(map(float, input().split()))
                 else:
@@ -76,7 +103,18 @@ def main() -> None:
                     print(f"ошибка при выполнении функции: {str(e)}")
             elif int(inp) < 10:
                 actions[int(inp)]()
-            break
+            elif int(inp) > 40:
+                print("введите параметры для генератора:")
+                print(f"сигнатура используемого генератора: {signature(actions[int(inp)])}")
+                try:
+                    par = input().split()
+                    for par_ in range(len(par)):
+                        par[par_] = val_transformations[int(inp) % 10][par_](par[par_])
+                    print(*actions[int(inp)](*par))
+                except TypeError:
+                    print("некорректно введены аргументы")
+                except IndexError:
+                    print("некорректно введены аргументы")
 
 
 if __name__ == "__main__":

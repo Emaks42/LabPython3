@@ -70,6 +70,7 @@ def radix_sort(a: list[int], base: int = 10) -> list[int]:
     """
         Функция, реализующая алгоритм сортировки Radix LSD
         :param a: сортируемый массив
+        :param base: осонование для распределния чисел
         :return: Возвращает отсортированный массив
     """
     current_digit = 0
@@ -92,8 +93,11 @@ def bucket_sort(a: list[float], buckets: int | None = None) -> list[float]:
     """
         Функция, реализующая алгоритм вёдерной сортировки
         :param a: сортируемый массив
+        :param buckets: количество "вёдер" для сортировки
         :return: Возвращает отсортированный массив
     """
+    if max(a) > 1.0:
+        raise ValueError("числа больше 1 в bucket_sort")
     buckets_list: list[list[float]] = []
     if not buckets:
         buckets = 10
