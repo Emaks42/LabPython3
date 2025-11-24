@@ -3,6 +3,7 @@ from src.sortings import bubble_sort, quick_sort, counting_sort, radix_sort, buc
 from src.generators import rand_int_array, rand_float_array, reverse_sorted, nearly_sorted, many_duplicates
 from src.benchmarks import timeit_once, print_benchmark_table
 from inspect import signature
+from src.constants import BAN_WORDS
 from src.stack import interactive_stack
 from typing import Callable
 
@@ -54,14 +55,14 @@ def main() -> None:
         if inp == "exec":
             print("Введите название функции с параметрами (вида func(x, y)):")
             inp = input()
+            for ban in BAN_WORDS:
+                if ban in inp:
+                    print("Вы пытаетесь сделать что-то подозрительное, пожалуйста, прекратите")
+                    continue
             print("Результат работы функции:", end=" ")
             try:
                 exec(f"print(*{inp})")
-            except SyntaxError as e:
-                print(f"ошибка при выполнении функции: {str(e)}")
-            except ValueError as e:
-                print(f"ошибка при выполнении функции: {str(e)}")
-            except TypeError as e:
+            except Exception as e:
                 print(f"ошибка при выполнении функции: {str(e)}")
             continue
         if inp == "t":
