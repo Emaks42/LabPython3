@@ -183,6 +183,13 @@ def heap_sort(a: list[Any], key: Callable[[Any], Any] | None = None, cmp: Callab
 
 def lenin_sort(a: list[Any], key: Callable[[Any], Any] | None = None, cmp: Callable[[Any, Any], int] | None = None) \
         -> list[Any]:
+    """
+        Функция, реализующая алгоритм сортировки "Ленин" (название временное)
+        :param a: сортируемый массив
+        :param key: ключ сортировки
+        :param cmp: компаратор
+        :return: Возвращает отсортированный массив
+    """
     if not key:
         key = fish_func
     if not cmp:
