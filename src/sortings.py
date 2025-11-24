@@ -179,3 +179,38 @@ def heap_sort(a: list[Any], key: Callable[[Any], Any] | None = None, cmp: Callab
         answer.append(heap.get_max())
 
     return answer[::-1]
+
+
+def lenin_sort(a: list[Any], key: Callable[[Any], Any] | None = None, cmp: Callable[[Any, Any], int] | None = None) \
+        -> list[Any]:
+    if not key:
+        key = fish_func
+    if not cmp:
+        cmp = fish_cmp
+    stalin_a: list[Any] = []
+    sav_a = []
+    max_ = a[0]
+    for obj_index in range(len(a)):
+        if cmp(key(a[obj_index]), key(max_)) != -1:
+            stalin_a.append(a[obj_index])
+            max_ = a[obj_index]
+        else:
+            sav_a.append(a[obj_index])
+    for obj in sav_a:
+        if obj < stalin_a[0]:
+            stalin_a.insert(0, obj)
+            continue
+        left = 0
+        right = len(stalin_a) - 1
+        while left != right and abs(left - right) != 1:
+            if cmp(key(obj), key(stalin_a[(left + right) // 2])) == -1:
+                right = (left + right) // 2
+            elif cmp(key(obj), key(stalin_a[(left + right) // 2])) == 1:
+                left = (left + right) // 2
+            elif cmp(key(obj), key(stalin_a[(left + right) // 2])) == 0:
+                left = (left + right) // 2
+                right = left
+        if right < left:
+            left, right = right, left
+        stalin_a.insert(left+1, obj)
+    return stalin_a

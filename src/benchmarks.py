@@ -1,6 +1,6 @@
 import timeit
 from typing import Callable, Any
-from src.sortings import bubble_sort, quick_sort, counting_sort, radix_sort, bucket_sort, heap_sort
+from src.sortings import bubble_sort, quick_sort, counting_sort, radix_sort, bucket_sort, heap_sort, lenin_sort
 from src.generators import rand_int_array, rand_float_array, reverse_sorted, nearly_sorted, many_duplicates
 
 
@@ -23,7 +23,7 @@ def benchmark_sorts(arrays: dict[str, list], algos: dict[str, Callable]) -> dict
                 "array": array,
             }
             try:
-                new_dict[alg_name] = timeit.timeit("alg(array)", number=10000, globals=glob)
+                new_dict[alg_name] = timeit.timeit("alg(array)", number=5000, globals=glob)
             except TypeError:
                 new_dict[alg_name] = -1
             except ValueError:
@@ -46,7 +46,9 @@ def print_benchmark_table():
         "radix": radix_sort,
         "counting": counting_sort,
         "heap": heap_sort,
-        "bucket": bucket_sort
+        "bucket": bucket_sort,
+        "lenin": lenin_sort,
+        "standart python": sorted
     }
     bench = benchmark_sorts(arrs, sortings)
     print(" " * 25, end="")

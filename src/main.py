@@ -1,5 +1,5 @@
 from src.functions import factorial, factorial_recursive, fibo, fibo_recursive
-from src.sortings import bubble_sort, quick_sort, counting_sort, radix_sort, bucket_sort, heap_sort
+from src.sortings import bubble_sort, quick_sort, counting_sort, radix_sort, bucket_sort, heap_sort, lenin_sort
 from src.generators import rand_int_array, rand_float_array, reverse_sorted, nearly_sorted, many_duplicates
 from src.benchmarks import timeit_once, print_benchmark_table
 from inspect import signature
@@ -24,6 +24,7 @@ def main() -> None:
         24: radix_sort,
         25: bucket_sort,
         26: heap_sort,
+        27: lenin_sort,
         41: rand_int_array,
         42: rand_float_array,
         43: reverse_sorted,
